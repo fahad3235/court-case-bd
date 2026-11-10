@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Court Case BD &#8212; Court-Case Diary &amp; Hearing Tracker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <h1 id="title">Court Case BD</h1>
+        <p class="subtitle" id="subtitle"></p>
+      </div>
+      <button id="langBtn" class="lang-btn" type="button">&#2476;&#2494;&#2434;&#2482;&#2494;</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="dashboard" type="button" id="tab-dashboard"></button>
+      <button class="tab" data-tab="cases" type="button" id="tab-cases"></button>
+      <button class="tab" data-tab="add" type="button" id="tab-add"></button>
+      <button class="tab" data-tab="data" type="button" id="tab-data"></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ============ DASHBOARD ============ -->
+  <section id="panel-dashboard" class="panel">
+    <div class="stats" id="statsGrid">
+      <div class="stat card"><span class="stat-num" id="statTotal">0</span><span class="stat-label" id="statTotalLabel"></span></div>
+      <div class="stat card"><span class="stat-num" id="statOngoing">0</span><span class="stat-label" id="statOngoingLabel"></span></div>
+      <div class="stat card warn"><span class="stat-num" id="statOverdue">0</span><span class="stat-label" id="statOverdueLabel"></span></div>
+      <div class="stat card"><span class="stat-num" id="statThisWeek">0</span><span class="stat-label" id="statThisWeekLabel"></span></div>
+      <div class="stat card"><span class="stat-num" id="statDisposed">0</span><span class="stat-label" id="statDisposedLabel"></span></div>
+      <div class="stat card"><span class="stat-num" id="statLogged">0</span><span class="stat-label" id="statLoggedLabel"></span></div>
+    </div>
+
+    <div class="card">
+      <h2 id="upcomingTitle"></h2>
+      <p id="upcomingEmpty" class="empty"></p>
+      <ul id="upcomingList" class="upcoming-list"></ul>
+    </div>
+
+    <div class="card">
+      <h2 id="byTypeTitle"></h2>
+      <ul id="byTypeList" class="type-list"></ul>
+    </div>
+
+    <p class="disclaimer" id="disclaimer"></p>
+  </section>
+
+  <!-- ============ CASES ============ -->
+  <section id="panel-cases" class="panel" hidden>
+    <div class="card filters">
+      <div class="field-row">
+        <div class="field">
+          <label for="filterStatus" id="filterStatusLabel"></label>
+          <select id="filterStatus"></select>
+        </div>
+        <div class="field">
+          <label for="filterType" id="filterTypeLabel"></label>
+          <select id="filterType"></select>
+        </div>
+      </div>
+    </div>
+    <p id="casesEmpty" class="empty card"></p>
+    <div id="caseList"></div>
+    <div id="caseDetail" class="card" hidden></div>
+  </section>
+
+  <!-- ============ ADD / EDIT CASE ============ -->
+  <section id="panel-add" class="panel" hidden>
+    <form id="caseForm" class="card" novalidate>
+      <h2 id="addCaseTitle"></h2>
+      <div class="field">
+        <label for="caseNoInput" id="caseNoLabel"></label>
+        <input id="caseNoInput" type="text" maxlength="60">
+      </div>
+      <div class="field">
+        <label for="titleInput" id="titleLabel"></label>
+        <input id="titleInput" type="text" maxlength="120">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="courtInput" id="courtLabel"></label>
+          <input id="courtInput" type="text" list="courtList" maxlength="100">
+          <datalist id="courtList"></datalist>
+        </div>
+        <div class="field">
+          <label for="typeSelect" id="typeLabel"></label>
+          <select id="typeSelect"></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="filingInput" id="filingLabel"></label>
+          <input id="filingInput" type="date">
+        </div>
+        <div class="field">
+          <label for="hearingInput" id="hearingLabel"></label>
+          <input id="hearingInput" type="date">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="lawyerNameInput" id="lawyerNameLabel"></label>
+          <input id="lawyerNameInput" type="text" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="lawyerPhoneInput" id="lawyerPhoneLabel"></label>
+          <input id="lawyerPhoneInput" type="tel" inputmode="numeric" maxlength="14">
+        </div>
+      </div>
+      <div class="field">
+        <label for="statusSelect" id="statusLabel"></label>
+        <select id="statusSelect"></select>
+      </div>
+      <div class="field">
+        <label for="notesInput" id="notesLabel"></label>
+        <textarea id="notesInput" rows="3" maxlength="1000"></textarea>
+      </div>
+      <p id="caseError" class="error" hidden></p>
+      <p id="caseOk" class="ok" hidden></p>
+      <div class="btn-row">
+        <button id="saveCaseBtn" class="btn primary" type="submit"></button>
+        <button id="cancelEditBtn" class="btn" type="button" hidden></button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ DATA ============ -->
+  <section id="panel-data" class="panel" hidden>
+    <div class="card">
+      <h2 id="dataTitle">Data</h2>
+      <div class="btn-row">
+        <button id="exportBtn" class="btn" type="button"></button>
+        <a id="downloadLink" class="btn" hidden download="court-case-bd-export.json">Download</a>
+      </div>
+      <div class="field">
+        <label for="importText" id="importLabel">Import JSON</label>
+        <textarea id="importText" rows="6"></textarea>
+      </div>
+      <p id="importOk" class="ok" hidden></p>
+      <p id="importFail" class="error" hidden></p>
+      <button id="importBtn" class="btn primary" type="button"></button>
+    </div>
+    <div class="card danger">
+      <h2 id="eraseTitle"></h2>
+      <p class="note" id="eraseHint"></p>
+      <div class="field">
+        <input id="eraseInput" type="text" autocomplete="off" placeholder="DELETE">
+      </div>
+      <p id="eraseWrong" class="error" hidden></p>
+      <p id="erasedMsg" class="ok" hidden></p>
+      <button id="eraseBtn" class="btn danger-btn" type="button"></button>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p id="footNote"></p>
+</footer>
+
+<script src="logic.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
